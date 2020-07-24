@@ -49,5 +49,6 @@ You can change the default values in `src/variable.py` too if you need.
 > * Interface to Change current playlist orders.
 > * Make it supports adding other languages.
 > * Admin Code cooldown.
+> * Make it supports VLC Player instead of ChromeDriver
 ## Something else:
 If there are ads stucking this Music Player, You can put extensions to fix it, Or buy yourself a premium, which is the best way to support Youtube.
