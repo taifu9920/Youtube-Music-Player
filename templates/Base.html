@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>RMH Music Player {{ Version }}</title>
+		
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" type="text/css">
+		<link href="static/style.css" rel="stylesheet" type="text/css">
+
+		<script>var __adobewebfontsappname__="dreamweaver"</script>
+		<script src="http://use.edgefonts.net/montserrat:n4:default;source-sans-pro:n2:default.js" type="text/javascript"></script>
+		<script src="static/script.js" type="text/javascript"></script>
+	</head>
+
+	<div id="mask" class="w3-center w3-text-red">Loading...</div>
+	
+	<body>
+		<header><img src="static/Logo.png" alt="RMH Music Player"></header>
+		<hr>
+		<label id="switch" class="switch">
+            <input type="checkbox" id="slider">
+            <span class="slider round"></span>
+        </label>
+		<section class="Content">
+			<div class="w3-card-4 w3-center">
+				<div class="w3-container w3-red"><h2>{{ Title }}</h2></div>
+				<div class="w3-text-red">{{ Message|safe }}</div>
+				<p style="height: 5px"></p>
+			</div>
+			<div class="w3-center">{{ Button|safe }}</div>
+		</section>
+		<hr>
+		<footer>
+		  <p class="footerNote">RMH Drift - <a href="mailto:taifu9920923@gmail.com"><span>Email me</span></a></p>
+		</footer>
+	</body>
+</html>
