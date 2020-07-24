@@ -45,6 +45,7 @@ You can change the default values in `src/variable.py` too if you need.
 ## Planning Updates:
 > * Play now Button, Because some peoples wish to play their song after schedule it.
 > * Interface to Change current playlist orders.
-> * Finding more program problems to avoid.
+> * Make it supports adding other languages.
+> * Admin Code cooldown.
 ## Something else:
 If there are ads stucking this Music Player, You can put extensions to fix it, Or buy yourself a premium, which is the best way to support Youtube.
