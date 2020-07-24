@@ -24,81 +24,23 @@ And create more functions for the playlist.
 ### 2. Enter your URL for Extension
 ### 3. It should be downloading, after that, It'll automatically puts into `CRX/`
 ## Files:
-<table>
-    <tr>
-        <td>Name</td>
-		<td>Type</td>
-		<td>Detail</td>
-	</tr>
-    <tr>
-        <td>Setup</td>
-		<td>Folder</td>
-		<td>Contains all setup files for Installing necessary packages.</td>
-	</tr>
-    <tr>
-        <td>Src</td>
-		<td>Folder</td>
-		<td>Contains other required functions to make Main.py work.</td>
-	</tr>
-    <tr>
-        <td>Templates</td>
-		<td>Folder</td>
-		<td>Has the HTML Control Panel files for HTTP access.</td>
-	</tr>
-    <tr>
-        <td>CRXInstaller.py</td>
-		<td>Python Executable</td>
-		<td>An easier way to install Chrome Extension by pasting link into it.</td>
-	</tr>
-    <tr>
-        <td>Main.py</td>
-		<td>Python Executable</td>
-		<td>The entry point of this program.</td>
-	</tr>
-</table>
+| Name | Type | Detail |
+| --------------- | --------------- | --------------- |
+| Setup | Folder | Contains all setup files for Installing necessary packages. |
+| Src | Folder | Contains other required functions to make Main.py work. |
+| Templates | Folder | Has the HTML Control Panel files for HTTP access. |
+| CRXInstaller.py | Python Executable | An easier way to install Chrome Extension by pasting link into it. |
+| Main.py | Python Executable | The entry point of this program. |  
 ## Extra Files After First Run:
-<table>
-    <tr>
-        <td>Name</td>
-		<td>Type</td>
-		<td>Detail</td>
-	</tr>
-    <tr>
-        <td>CRX</td>
-		<td>Folder</td>
-		<td>You can put any CRX 3 files inside, It'll automatically Loaded Every Time you run</td>
-	</tr>
-    <tr>
-        <td>backups</td>
-		<td>Folder</td>
-		<td>Store auto backups for the playlists.</td>
-	</tr>
-    <tr>
-        <td>Logs</td>
-		<td>Folder</td>
-		<td>Store every connection and message in your Music Player</td>
-	</tr>
-    <tr>
-        <td>Profile</td>
-		<td>Folder</td>
-		<td>Store User data for Chrome Driver.</td>
-	</tr>
-    <tr>
-        <td>DataBase.txt</td>
-		<td>Text File</td>
-		<td>Store Datas about Youtube Videos for quicker access.</td>
-	</tr>
-    <tr>
-        <td>playlist.txt</td>
-		<td>Text File</td>
-		<td>Store your last playlist.</td>
-	</tr>
-    <tr>
-        <td>setting.txt</td>
-		<td>Text File</td>
-		<td>Store your last setting.</td>
-	</tr>
-</table>
+| Name | Type | Detail |
+| --------------- | --------------- | --------------- |
+| CRX | Folder | You can put any CRX 3 files inside, It'll automatically Loaded Every Time you run |
+| backups | Folder | Store auto backups for the playlists. |
+| Logs | Folder | Store every connection and message in your Music Player |
+| Profile | Folder | Store User data for Chrome Driver. |
+| DataBase.txt | Text File | Store Datas about Youtube Videos for quicker access. |  
+| playlist.txt | Text File | Store your last playlist. |
+| setting.txt | Text File | Store your last setting. |  
 ## Planning Updates:
 > * Play now Button, Because some peoples wish to play their song after schedule it.
 * Interface to Change current playlist orders.
