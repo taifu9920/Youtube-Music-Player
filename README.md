@@ -5,7 +5,7 @@ who liked to play Music in Youtube by HTTP remote control,
 (or mostly let friends to control together)  
 And create more functions for the playlist.  
 
-P.S there're Logo, titles of RMH, which is named for my personal team, Change it whatever you liked uwu
+P.S there're Logo, titles of RMH, which is named for my personal team, Change it whatever you liked uwu  
 Current Version: 3.0.0
 ## How To Install:
 #### 1. Install Python 3, And this only support Windows for now
