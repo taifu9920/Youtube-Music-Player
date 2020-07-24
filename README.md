@@ -1,5 +1,4 @@
 # Youtube-Music-Player
-***
 ### Self Hosting a Music Player for Youtube via Chrome Driver and Flask in Python
 This project is made to deal with some peoples like me,  
 who liked to play Music in Youtube by HTTP remote control,  
@@ -16,7 +15,7 @@ This file `src/variable.py` contains all the setting you can change easily.
 Like your playlist saving Path, The Home Page of this Music Player, Where to save logs, even your own Admin Code.  
 At beginning I recommand you change the port into something else, And you can also decide if letting Internet access to your Music Player or not.  
 ***
-After Your first run, Few files will be generates, And Some folders too.  
+After Your first run, Few files and folders will be generates.  
 The `setting.txt` are also the current setting for Music Player,  
 You can change the default values in `src/variable.py` too if you need.  
 ## How to Install Extension:
