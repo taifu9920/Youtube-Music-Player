@@ -13,6 +13,7 @@ Current Version: 3.0.0
 #### 2. Go inside `Setup` folder, run command `pip install -r requirements.txt`
 #### 3. After this installing, back to the root folder.
 #### 4. You can now open `Main.py` to run this program
+#### 5. When running, You can go to the control panel `http://localhost:1487` (port 1487 by default, you can change it by setting)
 ## How To Setting:
 This file `src/variable.py` contains all the setting you can change easily.  
 Like your playlist saving Path, The Home Page of this Music Player, Where to save logs, even your own Admin Code.  
