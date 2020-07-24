@@ -1,6 +1,6 @@
 import os
 import zipfile
-import crx3_pb2
+import src.crx3_pb2
 import struct
 import argparse
 import io
