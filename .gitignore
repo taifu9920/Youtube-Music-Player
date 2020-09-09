@@ -7,3 +7,4 @@ Profile
 src/__pycache__
 debug.log
 SonarQubeScan.bat
+db.tinydb
