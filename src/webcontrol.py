@@ -12,7 +12,7 @@ CSRFProtect(app)
 HomeButton = "<p></p><button class='w3-btn w3-blue' id='Home'>Home</button>"
 ReturnButton = "<p></p><button class='w3-btn w3-blue' id='Return'>Return</button>"
 CopyButton = " <button class='w3-btn w3-green' id='CopyButton'>Copy<span class='Popup'>Copied</span></button>"
-version = "3.0"
+version = "3.0.1"
 Reloader = lambda a, b: "<script>setTimeout('setupTimer({0}, {1})',300);</script>".format(a, b)
 clearDelay = {}
 shuffleDelay = {}
