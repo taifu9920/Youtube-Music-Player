@@ -49,4 +49,4 @@ You can change the default values in `src/variable.py` too if you need.
 > * Make it supports VLC Player instead of ChromeDriver.
 > * Ads non-stucking.
 ## Something else:
-If there are ads stucking this Music Player, You can put extensions to fix it, Or buy yourself a premium, which is the best way to support Youtube.
+* low whisper * hey there's some extension to block ads, use if you need.
