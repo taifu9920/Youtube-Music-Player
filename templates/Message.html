@@ -1,0 +1,10 @@
+{% extends 'Base.html' %}
+
+{% block Contents %}
+<div class="w3-card-4 w3-center">
+	<div class="w3-container w3-red"><h2>{{ Title }}</h2></div>
+	<div class="w3-text-red">{{ Message|safe }}</div>
+	<p style="height: 5px"></p>
+</div>
+<div class="w3-center">{{ Button|safe }}</div>
+{% endblock %}

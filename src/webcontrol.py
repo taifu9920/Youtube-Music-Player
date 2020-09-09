@@ -3,8 +3,22 @@ from random import shuffle
 from time import time
 from datetime import datetime, timedelta
 from src.functions import *
+from flask_wtf.csrf import CSRFProtect
+from os import urandom
 
 app = Flask(__name__, static_folder='../templates/static', template_folder='../templates')
+
+CSRFProtect(app)
+
+if not PathExist("secret.txt"):
+    with open("secret.txt", "w") as file:
+        secret = str(urandom(24))
+        file.write(secret)
+else:
+    with open("secret.txt", "r") as file:
+        secret = file.read()
+
+app.config['SECRET_KEY'] = secret
 HomeButton = "<p></p><button class='w3-btn w3-blue' id='Home'>Home</button>"
 ReturnButton = "<p></p><button class='w3-btn w3-blue' id='Return'>Return</button>"
 CopyButton = " <button class='w3-btn w3-green' id='CopyButton'>Copy<span class='Popup'>Copied</span></button>"
@@ -27,7 +41,7 @@ def Controller():
             feedback = "<h5>Successfully added %d Songs</h5><h5>Listing below:</h5>" % count[1]
             feedback += "<h5>".join(songs[1]) + "</h5><h5>%d Songs failed to add:</h5>" % count[0]
             feedback += "<h5>".join(songs[0]) + "</h5>"
-            return render_template("base.html", Title = "System Message", Message= feedback, Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message= feedback, Button = HomeButton, Version = version)
     return render_template("index.html", Current_Mode = v.mode, Version = version)
         
 @app.route("/Admin", methods=['GET', "POST"])
@@ -38,39 +52,30 @@ def Admin():
         if datas.get('cmd') == "clear":
             v.Musics = [] ; v.isPlaying = False
             core.Next(v.mode)
-            return render_template("base.html", Title = "System Message", Message= "<h5>Queue cleared!</h5>", Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message= "<h5>Queue cleared!</h5>", Button = HomeButton, Version = version)
         elif datas.get('cmd') == "shutdown":
             v.ServerStatus = False
-            return render_template("base.html", Title = "System Message", Message= "<h5>Shutting down...</h5>", Version = version)
+            return render_template("Message.html", Title = "System Message", Message= "<h5>Shutting down...</h5>", Version = version)
         elif datas.get('cmd') == "shuffle":
             shuffle(v.Musics)
-            return render_template("base.html", Title = "System Message", Message= "<h5>Randomize Shuffled!</h5>", Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message= "<h5>Randomize Shuffled!</h5>", Button = HomeButton, Version = version)
         elif datas.get('cmd') == "reset":
             clearDelay, shuffleDelay = {}, {}
-            return render_template("base.html", Title = "System Message", Message= "<h5>All cooldown has been reset!</h5>", Button = HomeButton, Version = version)
-        elif datas.get('cmd') == "save": return render_template("base.html", Title = "System Message", Message= "<h5>Saved to the following name: " + core.save() + "</h5>", Button = HomeButton, Version = version)
-        else: return render_template("base.html", Title = "Admin Control Panel", Message= """
-<form id="AdmControl" class="w3-bar" method="post">
-<input type="hidden" name="Admin" value="{0}" />
-<button name='cmd' class="w3-bar-item w3-button" value='clear' type='submit'>Empty Queues</button>
-<button name='cmd' class="w3-bar-item w3-button" value='shutdown' type='submit'>Shutdown System</button>
-<button name='cmd' class="w3-bar-item w3-button" value='shuffle' type='submit'>Shuffle Queues</button>
-<button name='cmd' class="w3-bar-item w3-button" value='reset' type='submit'>Reset Cooldowns</button>
-<button name='cmd' class="w3-bar-item w3-button" value='save' type='submit'>Save playlist</button>
-</form>
-""".format(datas["Admin"]), Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message= "<h5>Incorrect datas!</h5>", Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message= "<h5>All cooldown has been reset!</h5>", Button = HomeButton, Version = version)
+        elif datas.get('cmd') == "save": return render_template("Message.html", Title = "System Message", Message= "<h5>Saved to the following name: " + core.save() + "</h5>", Button = HomeButton, Version = version)
+        else: return render_template("Admin.html", Title = "Admin Control Panel", Button = HomeButton, Version = version, Code = datas['Admin'] )
+    return render_template("Message.html", Title = "System Message", Message= "<h5>Incorrect datas!</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Shuffle")
 def Shuffle():
     incoming(request)
     IP = request.remote_addr
     delay = int(time()) - shuffleDelay.get(IP, 0)
-    if delay < 300: return render_template("base.html", Title = "System Message", Message= "<h5>Still in cooldown!</h5><h5>" + str(timedelta(seconds=300 - delay)) + "</h5>", Button = HomeButton, Version = version)
+    if delay < 300: return render_template("Message.html", Title = "System Message", Message= "<h5>Still in cooldown!</h5><h5>" + str(timedelta(seconds=300 - delay)) + "</h5>", Button = HomeButton, Version = version)
     else:
         shuffle(v.Musics)
         shuffleDelay[IP] = int(time())
-        return render_template("base.html", Title = "System Message", Message= "<h5>Randomize Shuffled!</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message= "<h5>Randomize Shuffled!</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Playlist")
 def Playlist():
@@ -79,21 +84,21 @@ def Playlist():
         ls = "<table id='CopyHere'>"
         if not v.urlNow[32:] in v.Musics: ls += "<tr><th class='w3-center'><h5>" + v.urlNow + "</h5></th></tr>"
         for i in v.Musics: ls += "<tr><th class='w3-center'><h5>" + "https://www.youtube.com/watch?v=" + i + "</h5></th></tr>"
-        return render_template("base.html", Title = "System Message", Message= ls + "</table>", Button = HomeButton + CopyButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message= "<h5>No songs are playing!</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message= ls + "</table>", Button = HomeButton + CopyButton, Version = version)
+    return render_template("Message.html", Title = "System Message", Message= "<h5>No songs are playing!</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Clear")
 def Clear():
     incoming(request)
     IP = request.remote_addr
     delay = int(time()) - clearDelay.get(IP, 0)
-    if delay < 300: return render_template("base.html", Title = "System Message", Message= "<h5>Still in cooldown!</h5><h5>" + str(timedelta(seconds=300 - delay)) + "</h5>", Button = HomeButton, Version = version)
+    if delay < 300: return render_template("Message.html", Title = "System Message", Message= "<h5>Still in cooldown!</h5><h5>" + str(timedelta(seconds=300 - delay)) + "</h5>", Button = HomeButton, Version = version)
     if v.isPlaying:
         v.isPlaying = False ; v.Musics = []
         clearDelay[IP] = int(time())
         core.Next(v.mode)
-        return render_template("base.html", Title = "System Message", Message= "<h5>Queue cleared!</h5>", Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message= "<h5>Already empty!</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message= "<h5>Queue cleared!</h5>", Button = HomeButton, Version = version)
+    return render_template("Message.html", Title = "System Message", Message= "<h5>Already empty!</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Switch")
 def Switch():
@@ -107,9 +112,9 @@ def ChangeMode(mode):
                 if not v.urlNow[32:] in v.Musics: v.Musics.append(v.urlNow[32:])
             elif v.urlNow[32:] in v.Musics: v.Musics.remove(v.urlNow[32:])
         v.mode = mode
-        return render_template("base.html", Title = "System Message", Message = "<h5>Changed to " + mode + " Success!</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message = "<h5>Changed to " + mode + " Success!</h5>", Button = HomeButton, Version = version)
     else:
-        return render_template("base.html", Title = "System Message", Message = "<h5>Mode must be 'Queue' or 'Loop'</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message = "<h5>Mode must be 'Queue' or 'Loop'</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Queue")
 def Queue():
@@ -119,21 +124,21 @@ def Queue():
         ls = "<h5>Current Playing : <a href=" + v.urlNow +">" + core.getTitle(v.urlNow[32:]) + "</a></h5>"
         ls += "<table><tr><th class='w3-center'><h5>Current : <span id='CurrentTime'>" + str(v.CurrentTime) + "</span></h5></th><th class='w3-center'><h5>Duration : <span id='DurationTime'>" + str(v.DurationTime) + "</span></h5></th></tr></table>"
         if not len(v.Musics):
-            return render_template("base.html", Title = "System Message", Message = Reloader(v.CurrentTime, v.DurationTime) +  ls + "<h5>Queue is empty!</h5><h5>Time wasted : " + str(timedelta(seconds=time() - s)) + "</h5>", Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message = Reloader(v.CurrentTime, v.DurationTime) +  ls + "<h5>Queue is empty!</h5><h5>Time wasted : " + str(timedelta(seconds=time() - s)) + "</h5>", Button = HomeButton, Version = version)
         else:
             ls += "<table>"
             for i, o in enumerate(v.Musics, start=1): ls += "<tr><th>" + str(i) + "</th><th><a href=https://www.youtube.com/watch?v=" + o +">" + core.getTitle(o) + "</a></th></tr>"
-            return render_template("base.html", Title = "System Message", Message = Reloader(v.CurrentTime, v.DurationTime) +  ls + "</table><h5>Time wasted : " + str(timedelta(seconds=time() - s)) + "</h5>", Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message = "<h5>No song in queue yet!</h5>", Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message = Reloader(v.CurrentTime, v.DurationTime) +  ls + "</table><h5>Time wasted : " + str(timedelta(seconds=time() - s)) + "</h5>", Button = HomeButton, Version = version)
+    return render_template("Message.html", Title = "System Message", Message = "<h5>No song in queue yet!</h5>", Button = HomeButton, Version = version)
 
 @app.route("/Skip")
 def Skip():
     incoming(request)
     if v.isPlaying:
         core.Next(v.mode)
-        if v.isPlaying: return render_template("base.html", Title = "System Message", Message= "<h5>Skipped!</h5>", Button = HomeButton, Version = version)
-        else: return render_template("base.html", Title = "System Message", Message= "<h5>Skipped, Queue is now empty</h5>", Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message = "<h5>No songs are playing right now!</h5>", Button = HomeButton, Version = version)
+        if v.isPlaying: return render_template("Message.html", Title = "System Message", Message= "<h5>Skipped!</h5>", Button = HomeButton, Version = version)
+        else: return render_template("Message.html", Title = "System Message", Message= "<h5>Skipped, Queue is now empty</h5>", Button = HomeButton, Version = version)
+    return render_template("Message.html", Title = "System Message", Message = "<h5>No songs are playing right now!</h5>", Button = HomeButton, Version = version)
         
 @app.route("/Remove")
 def Remove():
@@ -145,12 +150,12 @@ def Remove():
             try: v.Musics.remove(data.get("Remove"))
             except: "Nothing"
         ls = "<h5>Current Playing : <a href=" + v.urlNow +">" + core.getTitle(v.urlNow[32:]) + "</a></h5>"
-        ls += "<table><form><tr><th class='w3-center'><h5>Current : <span id='CurrentTime'>" + str(v.CurrentTime) + "</span></h5></th><th class='w3-center'><h5>Duration : <span id='DurationTime'>" + str(v.DurationTime) + "</span></h5></th></tr></table>"
+        ls += "<table><form><input type='hidden' name='csrf_token' value='{{ csrf_token() }}'/><tr><th class='w3-center'><h5>Current : <span id='CurrentTime'>" + str(v.CurrentTime) + "</span></h5></th><th class='w3-center'><h5>Duration : <span id='DurationTime'>" + str(v.DurationTime) + "</span></h5></th></tr></table>"
         ls += "<h5>Listing " + str(len(v.Musics)) + " songs in queue :</h5><table>"
         for i, o in enumerate(v.Musics, start=1): ls += "<tr><th>" + str(i) + "</th><th><a href=https://www.youtube.com/watch?v=" + o +">" + core.getTitle(o) + "</a></th><th><button class='w3-bar-item w3-button' type='submit' name='Remove' value='{0}'>X</button></th></tr>".format(o)
         ls += """</form></table><h5>Time wasted : """ + str(timedelta(seconds=time() - s)) + "</h5>"
-        return render_template("base.html", Title = "System Message", Message= Reloader(v.CurrentTime, v.DurationTime) + ls, Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message= "<h5>No song is playing nor in queue!</h5>", Button = HomeButton, Version = version)
+        return render_template("Message.html", Title = "System Message", Message= Reloader(v.CurrentTime, v.DurationTime) + ls, Button = HomeButton, Version = version)
+    return render_template("Message.html", Title = "System Message", Message= "<h5>No song is playing nor in queue!</h5>", Button = HomeButton, Version = version)
     
 @app.route("/Volume")
 def Volume():
@@ -161,17 +166,7 @@ def Volume():
             vol = int(vol)
             if vol <= 100 and vol >= 0:
                 v.volume = vol
-                return render_template("base.html", Title = "System Message", Message= "<h5>Volume set to {0} Success</h5>".format(vol), Button = ReturnButton, Version = version)
+                return render_template("Message.html", Title = "System Message", Message= "<h5>Volume set to {0} Success</h5>".format(vol), Button = ReturnButton, Version = version)
         except:
-            return render_template("base.html", Title = "System Message", Message= "<h5>Volume must be a number!</h5>", Button = HomeButton, Version = version)
-    return render_template("base.html", Title = "System Message", Message= """
-<h5>Current Volume is : <span id="VolNow">{0}</span></h5>
-<h5>Please specific the volume you want:</h5>
-<form method="get">
-<input type="range" id="volume" name="vol"
-    min="0" max="100" step="5">
-<label for="volume">Volume</label>
-<p></p>
-<button class="w3-btn w3-red" type="submit"/>Send</button>
-</form>
-""".format(v.volume), Button = HomeButton, Version = version)
+            return render_template("Message.html", Title = "System Message", Message= "<h5>Volume must be a number!</h5>", Button = HomeButton, Version = version)
+    return render_template("Volume.html", Title = "System Message", VolumeNow = v.volume, Button = HomeButton, Version = version)

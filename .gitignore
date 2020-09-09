@@ -1,0 +1,8 @@
+.scannerwork
+backups
+CRX
+Logs
+Profile
+src/__pycache__
+debug.log
+SonarQubeScan.bat

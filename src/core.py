@@ -1,23 +1,27 @@
 import json, src.webplayer as p
 from urllib.request import urlopen
 from threading import Thread
-from src.functions import *
+from src.functions import logger, FolderInit, PathExist, SaveName
 from time import sleep
 from shutil import copyfile
 
 #For Loading every Setting and Data
-def Init():
+def init():
     v.Musics = []
     v.titleDB = {}
     v.isPlaying = False
     v.urlNow = ""
 
-    p.v = v ; p.Init()
+    p.v = v ; p.init()
     #If setting file exist
     if PathExist("setting.txt"):
-        with open("setting.txt","r") as file:
-            #Load Contents
-            v.mode, v.volume = file.read().split()
+        try:
+            with open("setting.txt","r") as file:
+                #Load Contents
+                v.mode, v.volume, v.FastLoad = file.read().split()
+        except ValueError:
+            logger("setting.txt has something went wrong!", 1)
+            logger("Using default setting...")
     #If Youtube Video database exist
     if PathExist("DataBase.txt"):
         with open("DataBase.txt", "r") as file:
@@ -28,13 +32,19 @@ def Init():
         with open("playlist.txt", "r") as file:
             #Load Contents
             songs = file.read().split()
-            if len(songs):
-                c = Schedule(PlayList = songs)[0]
-                if c[0]:
-                    #When Some Songs are failed to Load
-                    logger("{0} Songs are Failed To load".format(c[0]), 2)
-                    if c[1]:
-                        v.isPlaying = False
+            if eval(v.FastLoad): 
+                logger("Using fast loading...")
+                v.Musics = songs
+                Next(v.mode)
+                logger("Fast Loaded!")
+            else:
+                if len(songs):
+                    c = Schedule(PlayList = songs)[0]
+                    if c[0]:
+                        #When Some Songs are failed to Load
+                        logger("{0} Songs are Failed To load".format(c[0]), 2)
+                        if c[1]:
+                            v.isPlaying = False
         
     if not len(v.Musics): Next_Process(v.HomePage)
     p.NoSuvery()
@@ -165,7 +175,7 @@ def save():
         with open("playlist.txt", "w") as file:
             "Empty"
     with open("setting.txt", "w") as file:
-        file.write("{0}\n{1}".format(v.mode, v.volume))
+        file.write("\n".join([v.mode, str(v.volume), v.FastLoad]))
     with open("DataBase.txt", "w") as file:
         file.write(json.dumps(v.titleDB))
     return fn

@@ -48,7 +48,6 @@ h2 {
   height: 40px;
   width: 40px;
   left: 0px;
-  bottom: 4px;
   top: 0;
   bottom: 0;
   margin: auto 0;
@@ -215,6 +214,7 @@ button {
 	height: 100%;
 	padding: 1% 2% 1% 2%;
 	color: #4CAF50;
+	margin: 0;
 }
 #AdmControl {
 	max-width: unset;

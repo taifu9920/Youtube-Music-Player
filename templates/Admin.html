@@ -1,0 +1,19 @@
+{% extends 'Base.html' %}
+
+{% block Contents %}
+<div class="w3-card-4 w3-center">
+	<div class="w3-container w3-red"><h2>{{ Title }}</h2></div>
+	<div class="w3-text-red">
+	<form id="AdmControl" class="w3-bar" method="post">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+		<input type="hidden" name="Admin" value="{{ Code }}" />
+		<button name='cmd' class="w3-bar-item w3-button" value='clear' type='submit'>Empty Queues</button>
+		<button name='cmd' class="w3-bar-item w3-button" value='shutdown' type='submit'>Shutdown System</button>
+		<button name='cmd' class="w3-bar-item w3-button" value='shuffle' type='submit'>Shuffle Queues</button>
+		<button name='cmd' class="w3-bar-item w3-button" value='reset' type='submit'>Reset Cooldowns</button>
+		<button name='cmd' class="w3-bar-item w3-button" value='save' type='submit'>Save playlist</button>
+	</form>
+	</div>
+</div>
+<div class="w3-center">{{ Button|safe }}</div>
+{% endblock %}

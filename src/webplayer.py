@@ -17,7 +17,7 @@ Player = "ytp-time-display"
 RunScript = lambda script: v.browser.execute_script(script)
 CurrentURL = lambda: v.browser.current_url
 
-def Init():
+def init():
     #Chrome driver updates
     cd_ai.install()
     

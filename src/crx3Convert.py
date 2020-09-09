@@ -1,6 +1,6 @@
 import os
 import zipfile
-import src.crx3_pb2
+import crx3_pb2
 import struct
 import argparse
 import io
@@ -12,7 +12,6 @@ kCrxFileHeaderMagic = b'Cr24'
 VERSION = struct.pack('<I', 3)
 kSignatureContext = b'CRX3 SignedData\00'
 fileBufferLength = 4096
-
 
 def rm_trailing_slash(d):
     return d[:-1] if d.endswith(os.path.sep) else d

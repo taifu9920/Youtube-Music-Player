@@ -1,0 +1,21 @@
+{% extends 'Base.html' %}
+
+{% block Contents %}
+<div class="w3-card-4 w3-center">
+	<div class="w3-container w3-red"><h2>{{ Title }}</h2></div>
+	<div class="w3-text-red">
+		<h5>Current Volume is : <span id="VolNow">{{ VolumeNow }}</span></h5>
+		<h5>Please specific the volume you want:</h5>
+		<form method="get">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+			<input type="range" id="volume" name="vol"
+				min="0" max="100" step="5">
+			<label for="volume">Volume</label>
+			<p></p>
+			<button class="w3-btn w3-red" type="submit"/>Send</button>
+		</form>
+	</div>
+	<p style="height: 5px"></p>
+</div>
+<div class="w3-center">{{ Button|safe }}</div>
+{% endblock %}
