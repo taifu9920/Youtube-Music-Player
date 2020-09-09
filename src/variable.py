@@ -15,8 +15,6 @@ AdminPass = "RMH"
 mode = "Queue"
 #Volume, range 0 to 100
 volume = 50
-#If you're sure about never changing your playlist by editing the playlist.txt, You're fine to change this to true
-FastLoad = "True"
 
 #Boardcast the control pannel to Localhost or Internet
 #0 = Internet

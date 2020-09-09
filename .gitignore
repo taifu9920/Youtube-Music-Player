@@ -1,14 +1,8 @@
 .scannerwork
-backups
+.github
 CRX
 Logs
 Profile
 src/__pycache__
 debug.log
-SonarQubeScan.bat
-DataBase.txt
-playlist.txt
-psw.txt
-secret.txt
-setting.txt
 SonarQubeScan.bat

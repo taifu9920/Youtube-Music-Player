@@ -4,21 +4,11 @@ from time import time
 from datetime import datetime, timedelta
 from src.functions import *
 from flask_wtf.csrf import CSRFProtect
-from os import urandom
 
 app = Flask(__name__, static_folder='../templates/static', template_folder='../templates')
 
 CSRFProtect(app)
 
-if not PathExist("secret.txt"):
-    with open("secret.txt", "w") as file:
-        secret = str(urandom(24))
-        file.write(secret)
-else:
-    with open("secret.txt", "r") as file:
-        secret = file.read()
-
-app.config['SECRET_KEY'] = secret
 HomeButton = "<p></p><button class='w3-btn w3-blue' id='Home'>Home</button>"
 ReturnButton = "<p></p><button class='w3-btn w3-blue' id='Return'>Return</button>"
 CopyButton = " <button class='w3-btn w3-green' id='CopyButton'>Copy<span class='Popup'>Copied</span></button>"
@@ -62,7 +52,7 @@ def Admin():
         elif datas.get('cmd') == "reset":
             clearDelay, shuffleDelay = {}, {}
             return render_template("Message.html", Title = "System Message", Message= "<h5>All cooldown has been reset!</h5>", Button = HomeButton, Version = version)
-        elif datas.get('cmd') == "save": return render_template("Message.html", Title = "System Message", Message= "<h5>Saved to the following name: " + core.save() + "</h5>", Button = HomeButton, Version = version)
+        elif datas.get('cmd') == "save": return render_template("Message.html", Title = "System Message", Message= "<h5>Everything Saved</h5>", Button = HomeButton, Version = version)
         else: return render_template("Admin.html", Title = "Admin Control Panel", Button = HomeButton, Version = version, Code = datas['Admin'] )
     return render_template("Message.html", Title = "System Message", Message= "<h5>Incorrect datas!</h5>", Button = HomeButton, Version = version)
 

@@ -13,38 +13,27 @@ def init():
     v.urlNow = ""
 
     p.v = v ; p.init()
-    #If setting file exist
-    if PathExist("setting.txt"):
-        try:
-            with open("setting.txt","r") as file:
-                #Load Contents
-                v.mode, v.volume, v.FastLoad = file.read().split()
-        except ValueError:
-            logger("setting.txt has something went wrong!", 1)
-            logger("Using default setting...")
+    #If mode setting exists
+    tmp = v.db.get(v.query.mode.exists())
+    if tmp and tmp["mode"] in ["Queue", "Loop"]: v.mode = tmp["mode"]
+    else: v.db.insert({"mode": v.mode})
+
+    #If volume setting exists
+    tmp = v.db.get(v.query.volume.exists())
+    if tmp and tmp["volume"] in range(0, 100): v.volume = tmp["volume"]
+    else: v.db.insert({"volume": v.volume})
+
     #If Youtube Video database exist
-    if PathExist("DataBase.txt"):
-        with open("DataBase.txt", "r") as file:
-            #Load Contents
-            v.titleDB = json.loads(file.read())
+    tmp = v.db.get(v.query.titles.exists())
+    if tmp: v.titleDB = tmp["titles"]
+    else: v.db.insert({"titles": {}})
+
     #If Saved Playlist exist
-    if PathExist("playlist.txt"):
-        with open("playlist.txt", "r") as file:
-            #Load Contents
-            songs = file.read().split()
-            if eval(v.FastLoad): 
-                logger("Using fast loading...")
-                v.Musics = songs
-                Next(v.mode)
-                logger("Fast Loaded!")
-            else:
-                if len(songs):
-                    c = Schedule(PlayList = songs)[0]
-                    if c[0]:
-                        #When Some Songs are failed to Load
-                        logger("{0} Songs are Failed To load".format(c[0]), 2)
-                        if c[1]:
-                            v.isPlaying = False
+    tmp = v.db.get(v.query.playlist.exists())
+    if tmp:
+        v.Musics = tmp["playlist"]
+        Next(v.mode)
+    else: v.db.insert({"playlist": []})
         
     if not len(v.Musics): Next_Process(v.HomePage)
     p.NoSuvery()
@@ -164,18 +153,6 @@ def getTitle(vID):
         return ""
         
 def save():
-    FolderInit("backups")
-    fn = SaveName()
     if v.isPlaying:
-        with open("playlist.txt", "w") as file:
-            if v.mode == "Queue": file.write("\n".join([v.urlNow[32:]] + v.Musics))
-            else: file.write("\n".join([v.Musics[-1]] + v.Musics[:-1]))
-        copyfile("playlist.txt","backups\\" + fn)
-    else:
-        with open("playlist.txt", "w") as file:
-            "Empty"
-    with open("setting.txt", "w") as file:
-        file.write("\n".join([v.mode, str(v.volume), v.FastLoad]))
-    with open("DataBase.txt", "w") as file:
-        file.write(json.dumps(v.titleDB))
-    return fn
+        playlist = [v.Musics[-1]] + v.Musics[:-1] if v.mode == "Queue" else [v.urlNow[32:]] + v.Musics
+        v.db.update({"mode": v.mode, "volume": v.volume, "playlist": playlist, "titles": v.titleDB})
