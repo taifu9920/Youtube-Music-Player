@@ -31,6 +31,9 @@ def init():
     chrome_options = Options()
     chrome_options.add_argument("--user-data-dir=" + os.path.abspath(v.ProfilePath))
     
+    #Brave Browser Support
+    if v.Brave: chrome_options.binary_location = v.Brave
+
     #CRX loads
     
     for fn in [f for f in os.listdir(v.ExtensionPath) if os.path.isfile(os.path.join(v.ExtensionPath, f))]:
