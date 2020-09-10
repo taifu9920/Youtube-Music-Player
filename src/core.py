@@ -82,7 +82,7 @@ def Next_Process(vid): v.urlNow = "https://www.youtube.com/watch?v=" + vid
 def Player():
     while v.ServerStatus:
         try:
-            sleep(0.2)
+            sleep(0.3)
             #Switching Videos
             if p.CurrentURL() != v.urlNow: 
                 p.LoadURL(v.urlNow)
@@ -90,44 +90,55 @@ def Player():
                 p.WaitElement(Id = "toggle")
                 p.WaitElement(Tn = "video")
                 p.RunScript("a = document.getElementById('movie_player')")
-            #If in HomePage, make it Loop
-            if not v.isPlaying and p.CurrentURL()[32:] == v.HomePage and p.RunScript("return document.getElementsByTagName('video')[0].getAttribute('loop') == null"): p.RunScript("document.getElementsByTagName('video')[0].setAttribute('loop', '')")
-            #Remove 'are you there' popup
+
             try:
-                if p.GetElement(Tn = "ytd-popup-container"): p.RunScript("document.getElementsByTagName('ytd-popup-container')[0].remove()")
-            except Exception: "Nothing"
-            #Save Time information
-            try: v.CurrentTime, v.DurationTime = p.RunScript("return [a.getCurrentTime(), a.getDuration()]")
-            except Exception: "Nothing"
-            #Volume Sync
-            try:
-                if p.RunScript("return a.getVolume()") != v.volume: p.RunScript("a.setVolume(%s)" % v.volume)
-            except Exception: "Nothing"
-            #Disable auto play
-            try: 
-                if p.RunScript("return document.getElementById('toggle').active"): p.GetElement(Id = "toggleButton").click()
-            except Exception: "Nothing"
+                p.GetElement(Cn = "ytp-ad-preview-text")
+                if not p.RunScript("document.getElementsByTagName('video')[0].getAttribute('loop') == null"): p.RunScript("document.getElementsByTagName('video')[0].removeAttribute('loop')")
+                if p.RunScript("return document.getElementsByClassName('video-stream html5-main-video')[0].paused"):
+                    p.RunScript("document.getElementsByClassName('video-stream html5-main-video')[0].play()")
+                try:
+                    if p.RunScript("return document.getElementsByClassName('ytp-ad-skip-button-slot')[0].style['display'] == ''"): p.GetElement(Cn = "ytp-ad-skip-button").click()
+                except Exception:
+                    "Wait for it ends"
+            except Exception:
+                #If in HomePage, make it Loop
+                if not v.isPlaying and p.CurrentURL()[32:] == v.HomePage and p.RunScript("return document.getElementsByTagName('video')[0].getAttribute('loop') == null"): p.RunScript("document.getElementsByTagName('video')[0].setAttribute('loop', '')")
+                #Remove 'are you there' popup
+                try:
+                    if p.GetElement(Tn = "ytd-popup-container"): p.RunScript("document.getElementsByTagName('ytd-popup-container')[0].remove()")
+                except Exception: "Nothing"
+                #Save Time information
+                try: v.CurrentTime, v.DurationTime = p.RunScript("return [a.getCurrentTime(), a.getDuration()]")
+                except Exception: "Nothing"
+                #Volume Sync
+                try:
+                    if p.RunScript("return a.getVolume()") != v.volume: p.RunScript("a.setVolume(%s)" % v.volume)
+                except Exception: "Nothing"
+                #Disable auto play
+                try: 
+                    if p.RunScript("return document.getElementById('toggle').active"): p.GetElement(Id = "toggleButton").click()
+                except Exception: "Nothing"
             
-            statchk = p.RunScript("return a.getPlayerState()")
+                statchk = p.RunScript("return a.getPlayerState()")
             
-            if v.isPlaying and statchk == 0: Next(v.mode)
-            elif statchk == 2: p.RunScript("a.click()")
-            elif statchk in [-1, 5]:
-                if statchk == -1: p.RunScript("a.click()") ; statchk = p.RunScript("return a.getPlayerState()")
-                if statchk != 1:
-                    while p.RunScript("return document.getElementById('movie_player').getPlayerState()") in [5, -1]:
-                        logger(p.RunScript("return document.getElementsByClassName('reason')[0].textContent"))
-                        logger(p.RunScript("return document.getElementsByClassName('subreason')[0].textContent"))
-                        logger("Removed from playlist : " + v.urlNow[32:])
-                        v.titleDB[v.urlNow[32:]] = ""
-                        if v.mode == "Loop": v.Musics.remove(v.urlNow[32:])
-                        Next(v.mode)
-                        p.LoadURL(v.urlNow)
-                        try:
-                            p.WaitElement(Id = "movie_player")
-                            p.RunScript("a = document.getElementById('movie_player')")
-                        except TimeoutException:
-                            "Nothing"
+                if v.isPlaying and statchk == 0: Next(v.mode)
+                elif statchk == 2: p.RunScript("a.click()")
+                elif statchk in [-1, 5]:
+                    if statchk == -1: p.RunScript("a.click()") ; statchk = p.RunScript("return a.getPlayerState()")
+                    if statchk != 1:
+                        while p.RunScript("return document.getElementById('movie_player').getPlayerState()") in [5, -1]:
+                            logger(p.RunScript("return document.getElementsByClassName('reason')[0].textContent"))
+                            logger(p.RunScript("return document.getElementsByClassName('subreason')[0].textContent"))
+                            logger("Removed from playlist : " + v.urlNow[32:])
+                            v.titleDB[v.urlNow[32:]] = ""
+                            if v.mode == "Loop": v.Musics.remove(v.urlNow[32:])
+                            Next(v.mode)
+                            p.LoadURL(v.urlNow)
+                            try:
+                                p.WaitElement(Id = "movie_player")
+                                p.RunScript("a = document.getElementById('movie_player')")
+                            except TimeoutException:
+                                "Nothing"
         except Exception as e:
             try:
                 p.RunScript("a = document.getElementById('movie_player')")
