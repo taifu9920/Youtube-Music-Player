@@ -22,6 +22,12 @@ At beginning I recommand you change the port into something else, And you can al
 After Your first run, Few files and folders will be generates.  
 The `setting.txt` are also the current setting for Music Player,  
 You can change the default values in `src/variable.py` too if you need.  
+## Brave Web Browser Supported!
+#### 1. Open `src/variable.py`
+#### 2. Find this line of code: `Brave = None`
+#### 3. Replace this line with your Brave Web Browser path
+#### eg: `Brave = r"YOUR_PATH_TO_BRAVE.EXE"` (Be sure to replace `YOUR_PATH_TO_BRAVE.EXE` with your Brave path.)
+
 ## How to Install Extension:
 #### 1. Open `CRXInstaller.py`, It should shows `Input your extension url from Google WebStore:`
 #### 2. Enter your URL for Extension
