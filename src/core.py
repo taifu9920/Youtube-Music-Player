@@ -127,8 +127,8 @@ def Player():
                     if statchk == -1: p.RunScript("a.click()") ; statchk = p.RunScript("return a.getPlayerState()")
                     if statchk != 1:
                         while p.RunScript("return document.getElementById('movie_player').getPlayerState()") in [5, -1]:
-                            logger(p.RunScript("return document.getElementsByClassName('reason')[0].textContent"))
-                            logger(p.RunScript("return document.getElementsByClassName('subreason')[0].textContent"))
+                            logger(p.RunScript("return document.getElementById('reason').textContent"))
+                            logger(p.RunScript("return document.getElementById('subreason').textContent"))
                             logger("Removed from playlist : " + v.urlNow[32:])
                             v.titleDB[v.urlNow[32:]] = ""
                             if v.mode == "Loop": v.Musics.remove(v.urlNow[32:])
