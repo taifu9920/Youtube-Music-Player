@@ -6,11 +6,12 @@ who liked to play Music in Youtube by HTTP remote control,
 And create more functions for the playlist.
 
 P.S there're Logo, titles of RMH, which is named for my personal team, Change it whatever you liked uwu  
-Current Version: 3.0.3
+Current Version: 3.0.4
 ## How To Install:
 #### 1. Install Python 3, And this only support Windows for now
- * (I only tested **Windows 10** for this, Not sure if **Windows xp, 7 or 8** or other supports too) 
-#### 2. Go inside `Setup` folder, run command `pip install -r requirements.txt`
+ * (I only tested **Windows 10** for this, Not sure if **Windows xp, 7 or 8** or other supports too.) 
+ * (Updates: Now Linux also supported! Tested in Ubuntu.)
+#### 2. Go inside `Setup` folder, run `setup.bat` if you're Windows, or else if you're Linux run `setup.sh`
 #### 3. After this installing, back to the root folder.
 #### 4. You can now open `Main.py` to run this program
 #### 5. When running, You can go to the control panel `http://localhost:1487` (port 1487 by default, you can change it by setting)
