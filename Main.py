@@ -1,7 +1,6 @@
 from threading import Thread
 from time import sleep
 from os import path, walk, urandom
-from msvcrt import kbhit
 from src import variable as v, webcontrol as wc, functions as f, core, admin
 from tinydb import TinyDB, Query
 
@@ -36,13 +35,12 @@ def main():
     coreT.setDaemon(True)
     coreT.start()
 
-    f.logger("Server is running now!\nPress anything to close the server.")
+    f.logger("Server is running now!\nUse Ctrl + 'c' to stop.")
 
     #Terminal
 
     while v.ServerStatus:
-        if kbhit():
-            break
+        sleep(1)
 
     f.logger("Shutdowning...")
 
