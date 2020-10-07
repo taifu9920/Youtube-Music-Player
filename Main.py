@@ -42,7 +42,7 @@ def main():
     try:
         while v.ServerStatus:
             sleep(1)
-    except Exception:
+    except KeyboardInterrupt:
         "End"
 
     f.logger("Shutdowning...")
