@@ -39,8 +39,11 @@ def main():
 
     #Terminal
 
-    while v.ServerStatus:
-        sleep(1)
+    try:
+        while v.ServerStatus:
+            sleep(1)
+    except Exception:
+        "End"
 
     f.logger("Shutdowning...")
 
