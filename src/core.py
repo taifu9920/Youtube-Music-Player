@@ -166,4 +166,4 @@ def getTitle(vID):
 def save():
     if v.isPlaying:
         playlist = ([v.Musics[-1]] + v.Musics[:-1]) if v.mode == "Loop" else ([v.urlNow[32:]] + v.Musics)
-        v.db.update({"mode": v.mode, "volume": v.volume, "playlist": playlist, "titles": v.titleDB})
+        v.db.update({"mode": v.mode, "volume": v.volume, "playlist": playlist, "titles": {i:o for i,o in v.titleDB.items() if o != ""}})
