@@ -9,7 +9,7 @@ Flask-WTF==0.14.3
 waitress==1.4.4
 
 cffi==1.13.2
-cryptography==3.2
+cryptography==3.3.2
 protobuf==3.11.1
 pycparser==2.19
 six==1.13.0
