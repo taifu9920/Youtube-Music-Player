@@ -1,18 +1,18 @@
-Flask==1.1.1
-lxml>=4.6.2
-requests==2.22.0
-selenium==3.141.0
-soupsieve==1.9.5
-urllib3==1.25.8
-tinydb==4.1.1
-Flask-WTF==0.14.3
-waitress==1.4.4
+Flask
+lxml
+requests
+selenium
+soupsieve
+urllib3
+tinydb
+Flask-WTF
+waitress
 
-cffi==1.13.2
-cryptography==3.2
-protobuf==3.11.1
-pycparser==2.19
-six==1.13.0
+cffi
+cryptography
+protobuf
+pycparser
+six
 
-chrome-webstore-download==0.1.3
-chromedriver-autoinstaller==0.2.0
+chrome-webstore-download
+chromedriver-autoinstaller
