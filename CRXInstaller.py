@@ -1,4 +1,4 @@
-import chrome_webstore_download as cwd
+import requests
 import src.crx3Convert as crx3
 import os, sys, shutil
 defaultPath = "CRX\\"
@@ -10,11 +10,15 @@ if not os.path.exists(Temp):
 if not os.path.exists(defaultPath):
     os.makedirs(defaultPath)
 
-url = input("Input your extension url from Google WebStore: ")
-Name = cwd.parse(chrome_store_url=url)[1]
-cwd.download(url, Temp + Name)
+tmpurl = input("Input your extension url from Google WebStore: ")
 
-Name = [i for i in os.listdir(Temp) if i.startswith(Name)][0]
+url = "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=38.0&acceptformat=crx3&x=id%3D~~~~~~%26uc"
+url = url.replace("~~~~~~", tmpurl.split("/")[6])
+r = requests.get(url, allow_redirects=True)
+Name = tmpurl.split("/")[5] + ".crx"
+with open(Temp + Name, "wb") as file:
+    file.write(r.content)
+
 CRXPath = defaultPath + Name
 
 crx3.package(Temp + Name, "", CRXPath)
