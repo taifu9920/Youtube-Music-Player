@@ -10,8 +10,8 @@ ProfilePath = "Profile/"
 #Brave Web Browser
 #Change it to your Brave Explorer path if you want to enable it,
 #Otherwise, Keep it None.
-#Brave = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-Brave = None
+Brave = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+#Brave = None
 
 #Admin Pass
 AdminPass = "RMH"

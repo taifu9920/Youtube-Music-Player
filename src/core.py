@@ -84,11 +84,12 @@ def Player():
         try:
             sleep(0.3)
             #Switching Videos
-            if p.CurrentURL() != v.urlNow: 
+            if not v.urlNow.startswith(p.CurrentURL()):
                 p.LoadURL(v.urlNow)
                 p.WaitElement(Id = "movie_player")
                 p.WaitElement(Id = "toggle")
                 p.WaitElement(Tn = "video")
+                
                 p.RunScript("a = document.getElementById('movie_player')")
 
             try:
@@ -145,7 +146,14 @@ def Player():
                 if "Cannot read property 'textContent' of undefined" in str(e):
                     "Needed to wait extension process it a little"
                 else:
-                    logger(e, 1)
+                    p.WaitElement(Id = "contents")
+                    hint = p.RunScript("return document.querySelector('.promo-title.style-scope.ytd-background-promo-renderer') ? document.querySelector('.promo-title.style-scope.ytd-background-promo-renderer').innerText : ''")
+                    if hint and "這部影片已無法播放" in hint:
+                        logger("Skipped a song due to no longer exist", 1)
+                        Next("queue")
+                    else:
+                        print(hint)
+                        logger(e, 1)
             except Exception as e:
                 logger(e, 2)
                 raise
